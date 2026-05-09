@@ -1,0 +1,28 @@
+name: ensemble_sx_climate_health
+
+env_manager: uv
+env_config_path: pyproject.toml
+
+# Climate covariates the model expects
+climate_covariates:
+  - rainfall
+  - mean_temperature
+  - humidity
+
+# Forecast horizon constraints (CHAP uses these to validate requests)
+forecast_constraints:
+  min_lookahead: 1
+  max_lookahead: 12
+  time_unit: week
+
+user_options:
+  n_samples:
+    description: "Probabilistic samples per ensemble component (SARIMAX and XGBoost). Total samples per row = 2 * n_samples. Default 50 yields 100 ensemble samples."
+    type: integer
+    default: 50
+
+entry_points:
+  train:
+    command: "python train.py {train_data} {model}"
+  predict:
+    command: "python predict.py {model} {historic_data} {future_data} {out_file}"

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env
+*.egg-info/
+
+# Build artifacts
+dist/
+build/
+
+# Local model artifacts and predictions (CHAP writes these into the repo dir)
+*.pkl
+predictions.csv
+
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/

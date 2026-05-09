@@ -1,0 +1,23 @@
+name: ensemble_sx_climate_health
+
+# CHAP entry point commands
+train_command:   'python train.py {train_data} {model}'
+predict_command: 'python predict.py {model} {historic_data} {future_data} {out_file}'
+
+# Adapter mapping: CHAP standard variable name -> column name expected by this model.
+# CHAP rewrites incoming CSV columns according to this map before passing them
+# to train.py / predict.py. If your CHAP installation already uses the names on
+# the right, the mapping is identity.
+adapters:
+  disease_cases:    disease_cases
+  time_period:      time_period
+  location:         location
+  rainfall:         rainfall
+  mean_temperature: mean_temperature
+  humidity:         humidity
+
+# Required input columns (after adapter mapping)
+required_covariates:
+  - rainfall
+  - mean_temperature
+  - humidity
