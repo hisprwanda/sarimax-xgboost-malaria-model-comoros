@@ -62,8 +62,8 @@ python predict.py path/to/model.pkl path/to/historic_data.csv \
                   path/to/future_data.csv path/to/predictions.csv
 ```
 
-CHAP discovers the entry points via `MLproject` and applies the column-name
-adapter map declared in `config.yml`. The model is exposed to CHAP as
+CHAP discovers the entry points and the column-name adapter map from the
+top-level `MLproject` file. The model is exposed to CHAP as
 `ensemble_sx_climate_health`.
 
 ### Environment variables
@@ -130,9 +130,8 @@ high-fidelity climate forecasts.
 
 ```
 .
-├── MLproject              # CHAP entry-point manifest
-├── config.yml             # Variable adapter map and metadata
-├── pyproject.toml         # Python dependencies
+├── MLproject              # CHAP V2 manifest (entry points, adapters, metadata)
+├── pyproject.toml         # Python dependencies (managed by uv)
 ├── train.py               # CHAP training entry point
 ├── predict.py             # CHAP prediction entry point
 ├── model_lib.py           # SARIMAX + XGBoost implementations

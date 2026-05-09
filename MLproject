@@ -1,28 +1,34 @@
 name: ensemble_sx_climate_health
 
-env_manager: uv
-env_config_path: pyproject.toml
+uv_env: pyproject.toml
 
-# Climate covariates the model expects
-climate_covariates:
-  - rainfall
-  - mean_temperature
-  - humidity
+meta_data:
+  display_name: "Ensemble S+X — SARIMAX + XGBoost"
+  description: "Probabilistic climate-health forecasting via a SARIMAX(1,0,1) + XGBoost quantile-regression ensemble. Champion model on the Comoros 7-district malaria benchmark (CRPS 25.91)."
+  author: "HISP Rwanda"
+  organization: "HISP Rwanda"
+  citation_info: "https://github.com/hisprwanda/sarimax-xgboost-comoros-malaria-prediction-model"
 
-# Forecast horizon constraints (CHAP uses these to validate requests)
-forecast_constraints:
-  min_lookahead: 1
-  max_lookahead: 12
-  time_unit: week
-
-user_options:
-  n_samples:
-    description: "Probabilistic samples per ensemble component (SARIMAX and XGBoost). Total samples per row = 2 * n_samples. Default 50 yields 100 ensemble samples."
-    type: integer
-    default: 50
+# Variable adapter map: CHAP standard variable name -> column name expected by the model.
+# CHAP rewrites incoming CSV columns using this map before invoking train.py / predict.py.
+adapters:
+  disease_cases: disease_cases
+  time_period: time_period
+  location: location
+  rainfall: rainfall
+  mean_temperature: mean_temperature
+  humidity: humidity
 
 entry_points:
   train:
+    parameters:
+      train_data: str
+      model: str
     command: "python train.py {train_data} {model}"
   predict:
+    parameters:
+      model: str
+      historic_data: str
+      future_data: str
+      out_file: str
     command: "python predict.py {model} {historic_data} {future_data} {out_file}"
