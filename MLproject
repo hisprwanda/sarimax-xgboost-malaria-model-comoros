@@ -4,10 +4,17 @@ uv_env: pyproject.toml
 
 meta_data:
   display_name: "Ensemble S+X — SARIMAX + XGBoost"
-  description: "Probabilistic climate-health forecasting via a SARIMAX(1,0,1) + XGBoost quantile-regression ensemble. Champion model on the Comoros 7-district malaria benchmark (CRPS 25.91)."
-  author: "HISP Rwanda"
+  description: "Probabilistic climate-health forecasting via a SARIMAX(1,0,1) + XGBoost quantile-regression ensemble. Champion model on the Comoros 7-district malaria benchmark (CRPS 25.73)."
+  author: "Damour Nsanzimfira @ HISP Rwanda"
   organization: "HISP Rwanda"
   citation_info: "https://github.com/hisprwanda/sarimax-xgboost-comoros-malaria-prediction-model"
+
+# Climate covariates required in both training and future data CSVs.
+# CHAP will validate that these columns are present before invoking the model.
+required_covariates:
+  - rainfall
+  - mean_temperature
+  - humidity
 
 # Variable adapter map: CHAP standard variable name -> column name expected by the model.
 # CHAP rewrites incoming CSV columns using this map before invoking train.py / predict.py.
