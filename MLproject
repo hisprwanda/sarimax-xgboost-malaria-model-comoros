@@ -3,7 +3,7 @@ name: ensemble_sx_climate_health
 uv_env: pyproject.toml
 
 meta_data:
-  display_name: "Ensemble S+X — SARIMAX + XGBoost"
+  display_name: "Ensemble(SARIMAX + XGBoost)"
   description: "Probabilistic climate-health forecasting via a SARIMAX(1,0,1) + XGBoost quantile-regression ensemble. Champion model on the Comoros 7-district malaria benchmark (CRPS 25.73)."
   author: "Damour Nsanzimfira @ HISP Rwanda"
   organization: "HISP Rwanda"
@@ -15,16 +15,6 @@ required_covariates:
   - rainfall
   - mean_temperature
   - humidity
-
-# Variable adapter map: CHAP standard variable name -> column name expected by the model.
-# CHAP rewrites incoming CSV columns using this map before invoking train.py / predict.py.
-adapters:
-  disease_cases: disease_cases
-  time_period: time_period
-  location: location
-  rainfall: rainfall
-  mean_temperature: mean_temperature
-  humidity: humidity
 
 entry_points:
   train:

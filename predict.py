@@ -51,6 +51,7 @@ def main(model_path: str, historic_csv: str, future_csv: str, out_csv: str):
     rng       = np.random.default_rng(RNG_SEED)
 
     future_raw = pd.read_csv(future_csv)
+    future_raw = _clean_future_data(future_raw)
     _validate_future(future_raw)
 
     # Bridge lag features at the train/predict boundary
@@ -109,6 +110,21 @@ def main(model_path: str, historic_csv: str, future_csv: str, out_csv: str):
     os.makedirs(os.path.dirname(out_csv) or ".", exist_ok=True)
     out_df.to_csv(out_csv, index=False)
     print(f"[predict] wrote {len(out_df)} rows -> {out_csv}")
+
+
+def _clean_future_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Forward-fill missing values in future horizon data, per location.
+
+    Matches the CHAP convention from simple_multistep_model: missing covariate
+    values (and disease_cases if present for evaluation) are forward-filled
+    within each location group.
+    """
+    df = df.copy()
+    value_cols = ["rainfall", "mean_temperature", "humidity"]
+    if "disease_cases" in df.columns:
+        value_cols.append("disease_cases")
+    df[value_cols] = df.groupby("location")[value_cols].ffill()
+    return df
 
 
 def _validate_future(df: pd.DataFrame):
