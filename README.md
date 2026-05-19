@@ -130,7 +130,7 @@ high-fidelity climate forecasts.
 
 ```
 .
-├── MLproject              # CHAP V2 manifest (entry points, adapters, metadata)
+├── MLproject              # CHAP V2 manifest (entry points, metadata)
 ├── pyproject.toml         # Python dependencies (managed by uv)
 ├── train.py               # CHAP training entry point
 ├── predict.py             # CHAP prediction entry point
