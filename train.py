@@ -79,8 +79,12 @@ def main(train_csv: str, model_path: str):
         grp = grp.sort_values("time_period")
         y   = grp["disease_cases"].astype(float)
         X   = grp[xgb_covs].astype(float)
-        X, y = _remove_nan_rows(X, y)          # drop lag-NaN rows after feature engineering
-        xgb_models[loc] = ml.fit_xgb_one(y, X, grp["time_period"].loc[X.index])
+        # NB: _remove_nan_rows is NOT applied here. XGBoost handles NaN in X
+        # natively (learns the optimal split direction for missing values).
+        # Applying it would strip the initial lag-NaN rows and could leave an
+        # empty series on short CHAP evaluation splits, causing base_score=NaN.
+        # y is already NaN-free thanks to _clean_training_data().
+        xgb_models[loc] = ml.fit_xgb_one(y, X, grp["time_period"])
         print(f"[train]   XGBoost  {loc}  n_rows={len(y)}")
 
     # ── Bundle ───────────────────────────────────────────────────────────────
